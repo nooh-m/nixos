@@ -1,10 +1,8 @@
 # NOTE: ... is needed because dikso passes diskoFile
 {
-  lib,
-  disk ? "/dev/vda",
+  disk ? "/dev/nvme0n1",
   withSwap ? false,
-  swapSize,
-  config,
+  swapSize ? 8,
   ...
 }: {
   disko.devices = {
@@ -44,7 +42,7 @@
                     ];
                   };
                   "@persist" = {
-                    mountpoint = "${config.hostSpec.persistFolder}";
+                    mountpoint = "/persist";
                     mountOptions = [
                       "compress=zstd"
                       "noatime"
@@ -57,7 +55,8 @@
                       "noatime"
                     ];
                   };
-                  "@swap" = lib.mkIf withSwap {
+                  #"@swap" = lib.mkIf withSwap {
+                  "@swap" =  {
                     mountpoint = "/.swapvol";
                     swap.swapfile.size = "${swapSize}G";
                   };

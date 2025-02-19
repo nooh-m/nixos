@@ -23,6 +23,10 @@
       inputs.nixpkgs.follows = "stable";
     };
 
+    impermanence = {
+       url = "github:nix-community/impermanence";
+    };
+
     sddm-sugar-candy-nix = {
       url = "gitlab:Zhaith-Izaliel/sddm-sugar-candy-nix";
       inputs.nixpkgs.follows = "stable";
@@ -47,6 +51,7 @@
       laptop = stable.lib.nixosSystem {
         specialArgs = {inherit inputs outputs vars;};
         modules = [
+          inputs.impermanence.nixosModules.impermanence
           ./nixos/${vars.spec.username}
         ];
       };

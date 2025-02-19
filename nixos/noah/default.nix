@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs,inputs, ...}: {
   imports = [
     # If you want to use modules from other flakes (such as nixos-hardware):
     # inputs.hardware.nixosModules.common-cpu-amd
@@ -8,6 +8,16 @@
     ./hardware-configuration.nix
     ../common/core
     ../common/optional
+    ./imper.nix
+
+    inputs.disko.nixosModules.disko
+    (import ../common/disko/btrfs-disk.nix
+    {
+        disk = "/dev/nvme0n1";
+        withSwap = true;
+        swapSize = 8;
+    })
+
   ];
 
   users.users.haam = {
